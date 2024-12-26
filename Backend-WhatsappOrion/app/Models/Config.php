@@ -11,6 +11,9 @@ class Config extends Model
 
     protected $table = 'configuracion_api';
     public $timestamps = false;
+    protected $primaryKey = 'id_configuracion';
+    public $incrementing = true;
+    protected $keyType = 'int';
     protected $fillable = [
         'id_configuracion',
         'token_api',

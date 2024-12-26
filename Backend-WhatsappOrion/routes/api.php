@@ -1,10 +1,13 @@
 <?php
 
-use App\Http\Controllers\Api\ClientesController;
+use App\Http\Controllers\ApiIp6Controller;
 use App\Http\Controllers\ConfigController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/clientes', [ClientesController::class, 'index']);
+
+Route::get('/clients', [ApiIp6Controller::class, 'getClientData']);
+
+Route::post('/create-config', [ConfigController::class, 'store']);
 
 // Route::get('/config/aes', [ConfigController::class, 'getENV']);
 
