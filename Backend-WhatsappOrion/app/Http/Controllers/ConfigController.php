@@ -17,7 +17,7 @@ class ConfigController extends Controller
             'token_api' => 'required|string|max:255',
             'numero_verificacion' => 'required|numeric|max:255'
         ];
-        
+
         $validator = Validator::make($request->all(), $rules);
 
         // Comprobar si la validación falla
@@ -36,17 +36,82 @@ class ConfigController extends Controller
         ]);
        
 
-        return response()->json(['message' => 'Configuración creada', 'config' => $config], 201);
+        return response()->json(['message' => 'Configuración creada correctamente', 'config' => $config], 201);
     }
-    public function getClientData()
+   public function update(Request $request, $id)
     {
-        // Consumir el API externo
-        $response = Http::get('https://example.com/api/clients'); // Cambia esta URL por la de tu API
-        
-        if ($response->successful()) {
-            return response()->json($response->json(), 200);
+        // Validar los datos
+        $rules = [
+            'token_api' => 'required|string|max:255',
+            'numero_verificacion' => 'required|numeric'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        // Comprobar si la validación falla
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
         }
 
-        return response()->json(['error' => 'Failed to fetch data'], 500);
+        // Buscar el usuario por su ID
+        $config = Config::findOrFail($id);
+
+        // Actualizar los datos del usuario
+        $config->token_api = $request->token_api;
+        $config->numero_verificacion = $request->numero_verificacion;
+
+        
+
+        $config->save();
+
+        // Retornar respuesta en formato JSON
+        return response()->json([
+            'message' => 'Configuración actualizada correctamente.',
+            'user' => $config,
+        ], 200);
+    }
+    public function delete($id)
+    {
+       
+        // Buscar el usuario por su ID
+        $config = Config::findOrFail($id);
+
+        // Actualizar los datos del usuario
+        $config->estado = 0;
+       
+
+        $config->save();
+
+        // Retornar respuesta en formato JSON
+        return response()->json([
+            'message' => 'Configuración eliminada correctamente.',
+            'user' => $config,
+        ], 200);
+    }
+    public function index(Request $request)
+    {
+        // Obtener usuarios con estado = 1
+        $config = Config::where('estado', 1)->get();
+
+        // Retornar los usuarios en formato JSON
+        return response()->json([
+            'message' => 'Lista de configuraciones',
+            'configurations' => $config
+        ], 200);
+    }
+    public function consultById(Request $request, $id)
+    {
+        // Obtener usuarios con estado = 1
+        $config = Config::where('estado', 1)
+                            ->where('id_configuracion', $id)
+                            ->get();
+
+        // Retornar los usuarios en formato JSON
+        return response()->json([
+            'message' => 'Lista de configuraciones',
+            'configurations' => $config
+        ], 200);
     }
 }
