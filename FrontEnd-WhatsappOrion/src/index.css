@@ -1,2 +1,4 @@
-@import './styles/GestorCliente/styles.css';
 @import './styles/global.css';
+@import './styles/Sidebar/sidebar.css';
+@import './styles/GestorFlujos/DiagramaReactFlow/index.css';
+@import './styles/GestorFlujos/DiagramaReactFlow/xy-theme.css';

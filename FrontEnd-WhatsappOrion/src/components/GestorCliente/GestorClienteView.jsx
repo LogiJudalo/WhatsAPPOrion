@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import ListaClientes from './listaClientes';
 import getInfo from '../../services/GestorCliente/GestorClienteServ';
+import ModalCrearCliente from './ModalAgregarCliente';
+
 
 const GestorClienteView = () => {
 
@@ -20,7 +22,10 @@ const GestorClienteView = () => {
     <div>
       <div className='header'>
         <h1>Gestor de mensajes</h1>
-        <button className='btn btn-primary'>Agregar Notificacion</button>
+        <div className='buttons-container'>
+          <button className='btn btn-primary'>Agregar Notificacion</button>
+          <ModalCrearCliente/>
+        </div>
       </div>
       <div className='content'>
         <ListaClientes

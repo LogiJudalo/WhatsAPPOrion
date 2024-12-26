@@ -4,6 +4,7 @@ import GestorClienteView from "../components/GestorCliente/GestorClienteView";
 import ConfigDatos from "../components/ConfigDatosApi/ConfigDatosView";
 import NuevaConfig from "../components/ConfigDatosApi/NuevaConfig";
 import GestorFlujoView from "../components/GestorFlujos/GestorFlujoView";
+import FlujoVentana from "../components/GestorFlujos/FlujoVentana";
 
 const routes = [
 
@@ -33,8 +34,13 @@ const routes = [
         protected: false
     },
     {
+        path: '/FlujoVentana',
+        element: <FlujoVentana/>,
+        protected: false
+    },
+    {
         path: '/',
-        element: <Navigate to="/GestorFlujo" />, 
+        element: <Navigate to="/" />, 
         protected: false,
     }
 

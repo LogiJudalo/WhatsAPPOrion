@@ -3,9 +3,9 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
-import { Box } from "@mui/material";
-import NotificacionesGestorComponetes from "./ListaNotificaciones";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import ListaNotificaciones from "./ListaNotificaciones";
+import BlockIcon from '@mui/icons-material/Block';
 
 // Datos de ejemplo
 const data = [
@@ -241,6 +241,21 @@ const ListaClientes = ({ dato }) => {
         accessorKey: "nombre_cliente",
         header: "Nombre Cliente",
         size: 150,
+      },
+      {
+        header: 'Acciones',
+        size: 150,
+        Cell: ({ row }) => (
+          <div>
+            <Tooltip title="Deshabilitar">
+              <IconButton
+                color='primary'
+              >
+                <BlockIcon/>
+              </IconButton>
+            </Tooltip>
+          </div>
+        )
       },
     ],
     []

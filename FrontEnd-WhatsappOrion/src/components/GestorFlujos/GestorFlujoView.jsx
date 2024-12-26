@@ -6,7 +6,7 @@ const GestorFlujoView = () => {
   return (
     <div>
         <div className='header'>
-            <h1>Gestor de mensajes</h1>
+            <h1>Gestor de flujos</h1>
             <CrearFlujoModal/>
         </div>
         <div className='content'>

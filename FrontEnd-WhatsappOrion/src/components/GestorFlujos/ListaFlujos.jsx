@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MaterialReactTable, useMaterialReactTable } from 'material-react-table';
 import { IconButton, Tooltip } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditarFlujoModal from './EditarFlujoModal';
+
 
 
 //example data
@@ -56,8 +57,11 @@ const data = [
   },
 ];
 
+
+
 const ListaFlujos = () => {
   //should be memoized or stable
+  const navigate = useNavigate();
   const columns = useMemo(
     () => [
       {
@@ -88,6 +92,7 @@ const ListaFlujos = () => {
             <Tooltip title="Ver">
                 <IconButton
                     color='primary'
+                    onClick={() => navigate(`/FlujoVentana` )}
                 >
                     <VisibilityIcon/>
                 </IconButton>
