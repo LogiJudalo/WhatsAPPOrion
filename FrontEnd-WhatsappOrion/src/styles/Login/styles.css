@@ -1,0 +1,135 @@
+.login-container{
+    position: absolute; /* Hace que el div sea posicionado respecto al contenedor */
+    top: 50%; /* Lleva el div al centro vertical */
+    left: 50%; /* Lleva el div al centro horizontal */
+    transform: translate(-50%, -50%); /* Ajusta el punto de referencia */
+    width: 80%; /* Opcional: define un ancho */
+    height: 80%; /* Opcional: define una altura */
+    border: 1px solid black;
+}
+
+.login-form{
+    margin-top: 80%;
+}
+
+.login-form .form-group, .login-form .btn-submit{
+    margin-top: 5%;
+}
+
+.login-content{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.logo-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: green;
+    width: 80%;
+    height: 80vh;
+}
+
+.logo {
+    width: 100%; /* Limita el ancho máximo al 100% del contenedor */
+    height: 80vh; /* Limita la altura máxima al 80% del viewport */
+
+    margin: 0 auto; /* Centra la imagen horizontalmente */
+    display: block; /* Asegura que se comporte como un bloque */
+}
+
+
+.slogan {
+    font-size: 1rem;
+    color: #fff;
+    margin: 0;
+}
+
+.form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Espaciado entre los elementos del formulario */
+   
+    background: linear-gradient(145deg, #072A47 80%, #ffffff 60%);
+    width: 20%;
+    height: 80vh;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 0.5rem;
+}
+
+.form-control {
+    padding: 0.8rem;
+    border: none;
+    border-bottom: 2px solid #fff;
+    background: transparent;
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+}
+
+.form-control::placeholder {
+    color: #ccc;
+}
+
+label {
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    background-color: transparent;
+    border: 2px solid #fff;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: #fff;
+    color: #072A47;
+}
+
+
+@media screen and (max-width: 1360px) {
+    .login-container{
+        position: absolute; /* Hace que el div sea posicionado respecto al contenedor */
+        top: 50%; /* Lleva el div al centro vertical */
+        left: 50%; /* Lleva el div al centro horizontal */
+        transform: translate(-50%, -50%); /* Ajusta el punto de referencia */
+        width: 90%; /* Opcional: define un ancho */
+        height: 80%; /* Opcional: define una altura */
+        border: 1px solid black;
+    }
+
+    .logo-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: green;
+        width: 75%;
+        height: 80vh;
+    }
+
+    .login-form{
+        margin-top: 50%;
+    }
+    
+
+    .form-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem; /* Espaciado entre los elementos del formulario */
+        background: linear-gradient(145deg, #072A47 80%, #ffffff 60%);
+        width: 25%;
+        height: 80vh;
+    }
+}

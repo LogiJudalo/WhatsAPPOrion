@@ -20,10 +20,10 @@ const FormularioEdicion = ({ formData, onFormChange }) => {
 
   return (
     <div className='content'>
-        <div className='form'>
-            <div className='form-content'>
+        <div className='form-2'>
+            <div className='form-content-2'>
               <div className='options'>
-                <label className='form-label'>Notificacion</label>
+                <label className='form-label-2'>Notificacion</label>
                 <div className='input-group'>
                     <input type="text" 
                       className='form-control' 
@@ -35,7 +35,7 @@ const FormularioEdicion = ({ formData, onFormChange }) => {
               </div>
 
               <div className='options'>
-                <label className='form-label'>Titulo</label>
+                <label className='form-label-2'>Titulo</label>
                 <div className='input-group'>
                     <input type="text" 
                       className='form-control' 
@@ -47,7 +47,7 @@ const FormularioEdicion = ({ formData, onFormChange }) => {
               </div>
 
               <div className='options'>
-                <label className='form-label'>Descripcion</label>
+                <label className='form-label-2'>Descripcion</label>
                 <div className='input-group'>
                   <textarea 
                     className="form-control" 
@@ -68,28 +68,30 @@ const FormularioEdicion = ({ formData, onFormChange }) => {
                       checked={checkboxChecked}
                       onChange={handleCheckboxChange}
                     />
-                    <label className="form-label">La notificación tendrá URL</label>
+                    <label className="form-label-2">La notificación tendrá URL</label>
                   </div>
               </div>
 
               {checkboxChecked && (
                 <div className="options">
-                  <label className="form-label">URL</label>
+                  <label className="form-label-2">URL</label>
                   <div className="input-group">
-                    <input
-                      type="text"
-                      className="form-control"
-                      aria-describedby="basic-addon3 basic-addon4"
-                      placeholder="URL: www.ejemplo.com/"
-                      value={formData.url || ''}
-                      onChange={handleChange('url')}
-                    />
+                    <select 
+                    className="form-select form-select" 
+                    aria-label="Small select example"
+                    value={formData.estado}
+                    onChange={handleChange('URL')}
+                    >
+                      <option value="">Seleccione una opcion</option>
+                      <option value="1">URL 1</option>
+                      <option value="2">URL 2</option>
+                    </select>
                   </div>
                 </div>
               )}
 
               <div className='options'>
-                <label className='form-label'>Estado</label>
+                <label className='form-label-2'>Estado</label>
                 <select 
                   className="form-select form-select" 
                   aria-label="Small select example"
@@ -103,7 +105,7 @@ const FormularioEdicion = ({ formData, onFormChange }) => {
               </div>
 
               <div className='options'>
-                <label className='form-label'>Numero Variables Por Mensaje</label>
+                <label className='form-label-2'>Numero Variables Por Mensaje</label>
                 <div className='input-group'>
                     <input 
                       type="text" 

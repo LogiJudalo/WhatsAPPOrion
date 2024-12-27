@@ -39,7 +39,7 @@ const navigate = useNavigate();
                     </p>
 
                     <div className='options'>
-                        <label className='form-label'>Nombre Flujo</label>
+                        <label className='form-label-2'>Nombre Flujo</label>
                         <div className='input-group'>
                             <input type="text" 
                             className='form-control' 
@@ -48,7 +48,7 @@ const navigate = useNavigate();
                             />
                         </div>
 
-                        <label className='form-label'>Cliente</label>
+                        <label className='form-label-2'>Cliente</label>
                         <div className='input-group'>
                             <select class="form-select" aria-label="Default select example">
                                 <option>Seleccione una opcion</option>
@@ -57,7 +57,7 @@ const navigate = useNavigate();
                             </select>
                         </div>
 
-                        <label className='form-label'>Estado</label>
+                        <label className='form-label-2'>Estado</label>
                         <div className='input-group'>
                             <select class="form-select" aria-label="Default select example">
                                 <option>Seleccione una opcion</option>

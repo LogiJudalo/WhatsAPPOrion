@@ -5,9 +5,10 @@ import ConfigDatos from "../components/ConfigDatosApi/ConfigDatosView";
 import NuevaConfig from "../components/ConfigDatosApi/NuevaConfig";
 import GestorFlujoView from "../components/GestorFlujos/GestorFlujoView";
 import FlujoVentana from "../components/GestorFlujos/FlujoVentana";
+import LoginView from "../components/Login/LoginView";
+
 
 const routes = [
-
     {
         path: '/EdicionMensaje',
         element: <EdicionMensajeView/>,
@@ -39,8 +40,13 @@ const routes = [
         protected: false
     },
     {
+        path: '/LoginView',
+        element: <LoginView/>,
+        protected: false
+    },
+    {
         path: '/',
-        element: <Navigate to="/" />, 
+        element: <Navigate to="/GestorCliente" />, 
         protected: false,
     }
 

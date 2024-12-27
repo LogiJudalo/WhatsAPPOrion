@@ -1,5 +1,7 @@
 import { Box, Button, Modal, Typography } from '@mui/material';
-import React from 'react'
+import React, { useState } from 'react'
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const style = {
     position: 'absolute',
@@ -17,9 +19,46 @@ const style = {
 
 const ModalCrearCliente = () => {
 const [open, setOpen] = React.useState(false);
+
+const [formData, setFormData] = useState({
+    id_cliente_whatsapp: '',
+    nombre: '',
+    estado: 1,
+});
+
 const handleOpen = () => setOpen(true);
 const handleClose = () => setOpen(false);
+const handleChange = (e) => {
+    const {name, value} = e.target;
+    setFormData((prevState) => ({
+        ...prevState,
+        [name]: value,
+    }));
+}
 
+const handleSave = async () => {
+    try {
+        const response = await axios.post('http://127.0.0.1:8000/api/client/create', formData);
+        Swal.fire({
+            title: 'Cliente Creado',
+            text: `El cliente "${formData.nombre}" se ha creado con éxito.`,
+            icon: 'success',
+            confirmButtonText: 'Aceptar',
+            
+        });
+        setFormData({ id_cliente_whatsapp: '', nombre: '', estado: 1 }); 
+        handleClose(); 
+    } catch (error) {
+        console.error('Error creando cliente:', error);
+        handleClose(); 
+        Swal.fire({
+            title: 'Error',
+            text: 'Hubo un problema al crear el cliente. Intenta nuevamente.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+        });
+    }
+}
   return (
     <div>
         <button onClick={handleOpen} className='btn btn-primary'>Crear cliente</button>
@@ -36,27 +75,49 @@ const handleClose = () => setOpen(false);
                     </p>
 
                     <div className='options'>
-                        <label className='form-label'>Codigo Cliente</label>
+                        <label className='form-label-2'>Codigo Cliente</label>
                         <div className='input-group'>
                             <input type="text" 
-                            className='form-control' 
-                            aria-describedby='basic-addon3 basic-addon4'
-                            placeholder='Escriba el codigo'
+                                className='form-control' 
+                                aria-describedby='basic-addon3 basic-addon4'
+                                placeholder='Escriba el codigo'
+                                name='id_cliente_whatsapp'
+                                value={formData.id_cliente_whatsaap}
+                                onChange={handleChange}
                             />
                         </div>
 
-                        <label className='form-label'>Cliente</label>
+                        <label className='form-label-2'>Cliente</label>
                         <div className='input-group'>
-                            <select className="form-select" aria-label="Default select example">
+                            <select 
+                                className="form-select" 
+                                aria-label="Default select example"
+                                name="nombre"
+                                value={formData.nombre}
+                                onChange={handleChange}                
+                            >
                                 <option>Seleccione una opcion</option>
-                                <option value="1">Cliente 1</option>
-                                <option value="2">Cliente 2</option>
+                                <option value="Cliente 1">Cliente 1</option>
+                                <option value="Cliente 2">Cliente 2</option>
+                            </select>
+                        </div>
+
+                        <label className="form-label-2">Estado</label>
+                        <div className="input-group">
+                            <select
+                                className="form-select"
+                                name="estado"
+                                value={formData.estado} 
+                                onChange={handleChange} 
+                            >
+                                <option value={1}>Activo</option>
+                                <option value={0}>Inactivo</option>
                             </select>
                         </div>
                         
                         <div className='buttons'>
-                            <Button variant="contained" color='error'>Cerrar</Button>
-                            <Button variant="contained" color='success'>Guardar</Button>
+                            <Button variant="contained" color='error' onClick={handleClose}>Cerrar</Button>
+                            <Button variant="contained" color='success' onClick={handleSave}>Guardar</Button>
                         </div>
                     </div>
                 </div>

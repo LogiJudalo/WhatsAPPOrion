@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -6,239 +6,44 @@ import {
 import { Box, IconButton, Tooltip } from "@mui/material";
 import ListaNotificaciones from "./ListaNotificaciones";
 import BlockIcon from '@mui/icons-material/Block';
+import ModalAgregarNotificacion from "./ModalAgregarNotificacion";
 
 // Datos de ejemplo
-const data = [
-  {
-      "id_cliente": "0070",
-      "nombre_cliente": "ASCEND LABORATORIES S.A.S",
-      "plantillas": [
-          {
-              "id_plantilla_cab": 1,
-              "nombre_plantilla": "0",
-              "titulo": "Pruebas",
-              "mensaje": "Esta es una prueba de verificacion de funcionalidad de mensajes",
-              "check_url": 1,
-              "url": "http://localhost/orion/",
-              "estado": 1,
-              "numero_variables_mensajes": "3",
-              "fecha": "2024-12-13 08:38:33",
-              "usuario": "DREY",
-              "id_cliente": "0070",
-              "nombre_cliente": "ASCEND LABORATORIES S.A.S",
-              "id_flujo": "1",
-              "id_flujo_proceso": "2"
-          },
-          {
-              "id_plantilla_cab": 7,
-              "nombre_plantilla": "Cajas Originales",
-              "titulo": "Pruebas",
-              "mensaje": "Esta es una prueba de verificacion de funcionalidad de mensajes",
-              "check_url": 1,
-              "url": "http://localhost/orion/",
-              "estado": 2,
-              "numero_variables_mensajes": "3",
-              "fecha": "2024-12-13 10:48:28",
-              "usuario": "DLOZANO",
-              "id_cliente": "0070",
-              "nombre_cliente": "ASCEND LABORATORIES S.A.S",
-              "id_flujo": "1",
-              "id_flujo_proceso": "2"
-          },
-          {
-              "id_plantilla_cab": 9,
-              "nombre_plantilla": "0",
-              "titulo": "Pruebas",
-              "mensaje": "Esta es una prueba de verificacion de funcionalidad de mensajes",
-              "check_url": 1,
-              "url": "http://localhost/orion/",
-              "estado": 1,
-              "numero_variables_mensajes": "4",
-              "fecha": "2024-12-13 08:38:33",
-              "usuario": "DREY",
-              "id_cliente": "0070",
-              "nombre_cliente": "ASCEND LABORATORIES S.A.S",
-              "id_flujo": "1",
-              "id_flujo_proceso": "2"
-          },
-          {
-              "id_plantilla_cab": 11,
-              "nombre_plantilla": "0",
-              "titulo": "Pruebas",
-              "mensaje": "Esta es una prueba de verificacion de funcionalidad de mensajes",
-              "check_url": 1,
-              "url": "http://localhost/orion/",
-              "estado": 1,
-              "numero_variables_mensajes": "8",
-              "fecha": "2024-12-13 08:38:33",
-              "usuario": "DREY",
-              "id_cliente": "0070",
-              "nombre_cliente": "ASCEND LABORATORIES S.A.S",
-              "id_flujo": "1",
-              "id_flujo_proceso": "2"
-          }
-      ]
-  },
-  {
-      "id_cliente": "0053",
-      "nombre_cliente": "BAM SA",
-      "plantillas": [
-          {
-              "id_plantilla_cab": 2,
-              "nombre_plantilla": "0",
-              "titulo": "Pruebas",
-              "mensaje": "Esta es una prueba de verificacion de funcionalidad de mensajes",
-              "check_url": 1,
-              "url": "http://localhost/orion/",
-              "estado": 1,
-              "numero_variables_mensajes": "4",
-              "fecha": "2024-12-13 08:38:33",
-              "usuario": "DREY",
-              "id_cliente": "0053",
-              "nombre_cliente": "BAM SA",
-              "id_flujo": "1",
-              "id_flujo_proceso": "2"
-          },
-          {
-              "id_plantilla_cab": 3,
-              "nombre_plantilla": "0",
-              "titulo": "Pruebas",
-              "mensaje": "Esta es una prueba de verificacion de funcionalidad de mensajes",
-              "check_url": 1,
-              "url": "http://localhost/orion/",
-              "estado": 1,
-              "numero_variables_mensajes": "5",
-              "fecha": "2024-12-13 08:38:33",
-              "usuario": "DREY",
-              "id_cliente": "0053",
-              "nombre_cliente": "BAM SA",
-              "id_flujo": "1",
-              "id_flujo_proceso": "2"
-          },
-          {
-              "id_plantilla_cab": 5,
-              "nombre_plantilla": "0",
-              "titulo": "Pruebas",
-              "mensaje": "Esta es una prueba de verificacion de funcionalidad de mensajes",
-              "check_url": 1,
-              "url": "http://localhost/orion/",
-              "estado": 1,
-              "numero_variables_mensajes": "1",
-              "fecha": "2024-12-13 08:38:33",
-              "usuario": "DREY",
-              "id_cliente": "0053",
-              "nombre_cliente": "BAM SA",
-              "id_flujo": "1",
-              "id_flujo_proceso": "2"
-          }
-      ]
-  },
-  {
-      "id_cliente": "0054",
-      "nombre_cliente": "MSN LABS AMERICA SAS",
-      "plantillas": [
-          {
-              "id_plantilla_cab": 4,
-              "nombre_plantilla": "0",
-              "titulo": "Pruebas",
-              "mensaje": "Esta es una prueba de verificacion de funcionalidad de mensajes",
-              "check_url": 1,
-              "url": "http://localhost/orion/",
-              "estado": 1,
-              "numero_variables_mensajes": "7",
-              "fecha": "2024-12-13 08:38:33",
-              "usuario": "DREY",
-              "id_cliente": "0054",
-              "nombre_cliente": "MSN LABS AMERICA SAS",
-              "id_flujo": "1",
-              "id_flujo_proceso": "2"
-          },
-          {
-              "id_plantilla_cab": 6,
-              "nombre_plantilla": "0",
-              "titulo": "Pruebas",
-              "mensaje": "Esta es una prueba de verificacion de funcionalidad de mensajes",
-              "check_url": 1,
-              "url": "http://localhost/orion/",
-              "estado": 1,
-              "numero_variables_mensajes": "2",
-              "fecha": "2024-12-13 08:38:33",
-              "usuario": "DREY",
-              "id_cliente": "0054",
-              "nombre_cliente": "MSN LABS AMERICA SAS",
-              "id_flujo": "1",
-              "id_flujo_proceso": "2"
-          },
-          {
-              "id_plantilla_cab": 8,
-              "nombre_plantilla": "0",
-              "titulo": "Pruebas",
-              "mensaje": "Esta es una prueba de verificacion de funcionalidad de mensajes",
-              "check_url": 1,
-              "url": "http://localhost/orion/",
-              "estado": 1,
-              "numero_variables_mensajes": "6",
-              "fecha": "2024-12-13 08:38:33",
-              "usuario": "DREY",
-              "id_cliente": "0054",
-              "nombre_cliente": "MSN LABS AMERICA SAS",
-              "id_flujo": "1",
-              "id_flujo_proceso": "2"
-          },
-          {
-              "id_plantilla_cab": 10,
-              "nombre_plantilla": "0",
-              "titulo": "Pruebas",
-              "mensaje": "Esta es una prueba de verificacion de funcionalidad de mensajes",
-              "check_url": 1,
-              "url": "http://localhost/orion/",
-              "estado": 1,
-              "numero_variables_mensajes": "9",
-              "fecha": "2024-12-13 08:38:33",
-              "usuario": "DREY",
-              "id_cliente": "0054",
-              "nombre_cliente": "MSN LABS AMERICA SAS",
-              "id_flujo": "1",
-              "id_flujo_proceso": "2"
-          }
-      ]
-  },
-  {
-      "id_cliente": null,
-      "nombre_cliente": null,
-      "plantillas": [
-          {
-              "id_plantilla_cab": 12,
-              "nombre_plantilla": "Cajas Originales",
-              "titulo": "Pruebas",
-              "mensaje": "Esta es una prueba de verificacion de funcionalidad de mensajes",
-              "check_url": 1,
-              "url": "http://localhost/orion/",
-              "estado": 1,
-              "numero_variables_mensajes": "7",
-              "fecha": "2024-12-13 11:01:17",
-              "usuario": "DLOZANO",
-              "id_cliente": null,
-              "nombre_cliente": null,
-              "id_flujo": null,
-              "id_flujo_proceso": null
-          }
-      ]
-  }
-]
+ 
 
-const ListaClientes = ({ dato }) => {
-  const lista = dato;
+const ListaClientes = ({ id_cliente }) => {
+  const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchMensajes = async () => {
+      try {
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/client/list`
+        );
+        setData(response.data);
+        console.log("Funciona");
+      } catch (error) {
+        console.error("Error fetching mensajes");
+        setError("Hubo un problema en la carga de datos")
+      }   
+    };
+
+    if (id_cliente) {
+      fetchMensajes();
+    }
+  }, [id_cliente])
+  
 
   const columns = useMemo(
     () => [
       {
-        accessorKey: "id_cliente",
+        accessorKey: "id_cliente_whatsapp",
         header: "Codigo Cliente",
         size: 150,
       },
       {
-        accessorKey: "nombre_cliente",
+        accessorKey: "nombre",
         header: "Nombre Cliente",
         size: 150,
       },
@@ -254,6 +59,9 @@ const ListaClientes = ({ dato }) => {
                 <BlockIcon/>
               </IconButton>
             </Tooltip>
+ 
+              <ModalAgregarNotificacion/>
+     
           </div>
         )
       },

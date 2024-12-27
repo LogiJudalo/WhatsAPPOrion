@@ -39,7 +39,7 @@ const navigate = useNavigate();
                     </p>
 
                     <div className='options'>
-                        <label className='form-label'>Clave de usuario</label>
+                        <label className='form-label-2'>Clave de usuario</label>
                         <div className='input-group'>
                             <input type="text" 
                             className='form-control' 

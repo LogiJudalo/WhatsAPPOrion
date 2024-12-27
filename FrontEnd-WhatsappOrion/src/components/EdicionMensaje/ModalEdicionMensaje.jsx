@@ -36,7 +36,7 @@ const handleClose = () => setOpen(false);
                     </p>
 
                     <div className='options'>
-                        <label className='form-label'>Lista de Notificaciones</label>
+                        <label className='form-label-2'>Lista de Notificaciones</label>
                         <div className='input-group'>
                             <select className="form-select" aria-label="Default select example">
                                 <option>Seleccione una opcion</option>
