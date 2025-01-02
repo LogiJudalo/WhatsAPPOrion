@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Modal, Typography } from '@mui/material';
+import { Box, Button, IconButton, Modal, Tooltip, Typography } from '@mui/material';
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
@@ -25,9 +25,11 @@ const navigate = useNavigate();
 
   return (
     <>
-        <IconButton onClick={handleOpen} color='primary'>
-            <EditIcon/>
-        </IconButton>
+        <Tooltip title="Editar">
+            <IconButton onClick={handleOpen} color='primary'>
+                <EditIcon/>
+            </IconButton>
+        </Tooltip>
         <Modal
             open={open}
             onClose={handleClose}

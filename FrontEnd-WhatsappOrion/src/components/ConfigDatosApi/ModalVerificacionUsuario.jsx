@@ -34,9 +34,9 @@ const navigate = useNavigate();
         >
             <Box sx={style}>
                 <div className='modal-container'>
-                    <p>
-                        <h1>Verificacion de Usuario</h1>
-                    </p>
+                 
+                    <h1>Verificacion de Usuario</h1>
+                    
 
                     <div className='options'>
                         <label className='form-label-2'>Clave de usuario</label>

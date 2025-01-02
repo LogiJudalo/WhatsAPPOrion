@@ -1,22 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import getInfo from '../../services/GestorCliente/GestorClienteServ';
+import getInfo from '../../services/GestorCliente/ClientApiService';
 import ModalCrearCliente from './ModalAgregarCliente';
 import ListaClientes from './ListaClientes';
 
 
 const GestorClienteView = () => {
 
-  const [ListClient, setListClient] = useState([]);
 
-  const consultarData = async () => {
-    const data = await getInfo();
-    setListClient(data);
-  }
-
-  useEffect(() => {
-    consultarData();
-  }, [])
-  
 
   return (
     <div>
@@ -27,9 +17,7 @@ const GestorClienteView = () => {
         </div>
       </div>
       <div className='content'>
-        <ListaClientes
-          dato={ListClient}
-        />
+        <ListaClientes/>
       </div>
     </div>
   )

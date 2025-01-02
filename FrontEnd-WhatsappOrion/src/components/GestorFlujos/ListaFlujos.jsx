@@ -97,9 +97,9 @@ const ListaFlujos = () => {
                     <VisibilityIcon/>
                 </IconButton>
             </Tooltip>
-            <Tooltip title="Editar">
-                <EditarFlujoModal/>
-            </Tooltip>
+    
+            <EditarFlujoModal/>
+
             <Tooltip title="Eliminar">
               <IconButton
                 color='primary'

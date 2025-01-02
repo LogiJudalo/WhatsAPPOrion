@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -6,36 +6,40 @@ import {
 import { IconButton, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate }  from 'react-router-dom';
+import ClientApiService from '../../services/GestorCliente/ClientApiService';
 
 
-const ListaNotificaciones = ({ rawData }) => {
+const ListaNotificaciones = ({ id_cliente }) => {
 
-  const data = useMemo(
-    () =>
-      rawData.flatMap((cliente) =>
-        cliente.plantillas.map((plantilla) => ({
-          id_cliente: cliente.id_cliente,
-          nombre_cliente: cliente.nombre_cliente,
-          nombre_plantilla: plantilla.nombre_plantilla,
-          id_plantilla: plantilla.id_plantilla_cab,
-          mensaje: plantilla.mensaje,
-          titulo: plantilla.titulo,
-          url: plantilla.url,
-          numero_variables_mensajes: plantilla.numero_variables_mensajes,
-          estado: plantilla.estado
-        }))
-      ),
-    [rawData] 
-  );
-
-
-
+  const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchNotificaciones = async () => {
+      if (!id_cliente) return;
+
+      try {
+        const response = await ClientApiService.getNotificationsByClient(id_cliente);
+        setData(response.data);
+      } catch(err) {
+        console.error('Error fetching notifications', err);
+        setData([]);
+        setError('Hubo un problema al cargar las notificaciones')
+      }
+    };
+
+    fetchNotificaciones();
+
+  }, [id_cliente]);
+  
+
+
   const columns = useMemo(
     () => [
       {
-        accessorKey: 'nombre_plantilla', 
-        header: 'Notificacion',
+        accessorKey: 'id_mensaje_whatsapp', 
+        header: 'ID',
         size: 150,
       },
       {
@@ -44,13 +48,18 @@ const ListaNotificaciones = ({ rawData }) => {
         size: 150,
       },
       {
-        accessorKey: 'mensaje', 
+        accessorKey: 'descripcion', 
         header: 'Descripcion',
         size: 150,
       },
       {
-        accessorKey: 'url', 
-        header: 'URL Boton',
+        accessorKey: 'id_url', 
+        header: 'URL',
+        size: 150,
+      },
+      {
+        accessorKey: 'id_cliente_whatsapp', 
+        header: 'ID',
         size: 150,
       },
       {
@@ -61,7 +70,10 @@ const ListaNotificaciones = ({ rawData }) => {
             <Tooltip title="Editar">
               <IconButton
                 color='primary'
-                onClick={() => navigate(`/EdicionMensaje`, {state: row.original })}
+                onClick={() => 
+                  navigate(`/EdicionMensaje`, {
+                  state: { ...row.original },
+                })}
               >
                 <EditIcon/>
               </IconButton>
@@ -79,7 +91,7 @@ const ListaNotificaciones = ({ rawData }) => {
     data, 
   });
 
-  console.log({data});
+
 
   return <MaterialReactTable table={table} />;
 };

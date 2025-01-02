@@ -2,6 +2,7 @@ import { Box, Button, Modal, Typography } from '@mui/material';
 import React, { useState } from 'react'
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import ClientApiService from '../../services/GestorCliente/ClientApiService';
 
 const style = {
     position: 'absolute',
@@ -38,7 +39,7 @@ const handleChange = (e) => {
 
 const handleSave = async () => {
     try {
-        const response = await axios.post('http://127.0.0.1:8000/api/client/create', formData);
+        await ClientApiService.createClient(formData);
         Swal.fire({
             title: 'Cliente Creado',
             text: `El cliente "${formData.nombre}" se ha creado con éxito.`,

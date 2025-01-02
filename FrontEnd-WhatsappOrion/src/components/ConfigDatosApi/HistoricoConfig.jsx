@@ -15,42 +15,48 @@ const HistoricoConfig = () => {
   useEffect(() => {
     const fetchData = async () => {
       try{
-        const result = await ConfigApiService.getAllConfigs();
-        setData(result);
+        const configurations = await ConfigApiService.getAllConfigs();
+        setData(configurations);
+
       } catch (err) {
         console.error('Error fetch todas las configuraciones', err)
       };
-      fetchData();
     };
+    fetchData();
   }, [])
   
 
   const columns = useMemo(
     () => [
       {
-        accessorKey: 'id', 
+        accessorKey: 'id_configuracion', 
         header: 'Id Configuracion',
-        size: 150,
+        size: 100,
       },
+      // {
+      //   accessorKey: 'token_api', 
+      //   header: 'Token API',
+      //   size: 50,
+      // },
       {
-        accessorKey: 'Numero Verificacion',
+        accessorKey: 'numero_verificacion',
         header: 'Numero Verificacion',
         size: 150,
       },
       {
-        accessorKey: 'Fecha', 
+        accessorKey: 'fecha', 
         header: 'Fecha',
-        size: 200,
+        size: 100,
       },
       {
-        accessorKey: 'Usuario',
+        accessorKey: 'usuario',
         header: 'Usuario',
-        size: 150,
+        size: 100,
       },
       {
-        accessorKey: 'Estado',
+        accessorKey: 'estado',
         header: 'Estado',
-        size: 150,
+        size: 100,
       },
       {
         header: 'Acciones',
@@ -83,7 +89,15 @@ const HistoricoConfig = () => {
     data, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
   });
 
-  return <MaterialReactTable table={table} />;
+  return (
+    <div>
+      <MaterialReactTable 
+        table={table}  
+        columns={columns} 
+        data={data} 
+      />;
+    </div>
+  );
 };
 
 export default HistoricoConfig;

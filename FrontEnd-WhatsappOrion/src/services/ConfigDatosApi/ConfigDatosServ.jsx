@@ -10,13 +10,12 @@ const apiClient = axios.create({
 });
 
 
-
 const ConfigApiService = {
 
     getAllConfigs: async () => {
         try {
-            const response = await apiClient.get('/list-config'); 
-            return response.data;
+            const response = await apiClient.get('/config/list'); 
+            return response.data.configurations;
         } catch (error) {
             console.error('Error fetching config by ID:', error);
             return [];
@@ -25,7 +24,8 @@ const ConfigApiService = {
 
     createConfig: async (data) => {
         try {
-            const response = await apiClient.post('/create-config', data)
+            const response = await apiClient.post('/config/create', data);
+            return response.data; 
         } catch (error) {
             console.log('Error creando la configuracion:', error);
             throw error;
