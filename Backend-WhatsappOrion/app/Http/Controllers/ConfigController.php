@@ -15,7 +15,7 @@ class ConfigController extends Controller
         // Validar los datos
         $rules = [
             'token_api' => 'required|string|max:255',
-            'numero_verificacion' => 'required|numeric|max:255'
+            'numero_verificacion' => 'required|numeric'
         ];
 
         $validator = Validator::make($request->all(), $rules);
