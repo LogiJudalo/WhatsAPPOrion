@@ -95,7 +95,7 @@ const HistoricoConfig = () => {
         table={table}  
         columns={columns} 
         data={data} 
-      />;
+      />
     </div>
   );
 };

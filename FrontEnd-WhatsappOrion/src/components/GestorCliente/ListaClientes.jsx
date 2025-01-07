@@ -5,7 +5,6 @@ import {
 } from "material-react-table";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import ListaNotificaciones from "./ListaNotificaciones";
-import BlockIcon from "@mui/icons-material/Block";
 import ModalAgregarNotificacion from "./ModalAgregarNotificacion";
 import axios from "axios";
 import ClientApiService from "../../services/GestorCliente/ClientApiService";
@@ -62,11 +61,6 @@ const ListaClientes = () => {
         size: 150,
         Cell: ({ row }) => (
           <div>
-            <Tooltip title="Deshabilitar">
-              <IconButton color="primary">
-                <BlockIcon />
-              </IconButton>
-            </Tooltip>
             <ModalAgregarNotificacion id_cliente_whatsapp={row.original.id_cliente_whatsapp} />
           </div>
         ),

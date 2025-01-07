@@ -5,6 +5,7 @@ import { IconButton, Tooltip } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditarFlujoModal from './EditarFlujoModal';
+import BlockIcon from "@mui/icons-material/Block";
 
 
 
@@ -100,11 +101,17 @@ const ListaFlujos = () => {
     
             <EditarFlujoModal/>
 
-            <Tooltip title="Eliminar">
+            {/* <Tooltip title="Eliminar">
               <IconButton
                 color='primary'
               >
                 <DeleteIcon/>
+              </IconButton>
+            </Tooltip> */}
+
+            <Tooltip title="Deshabilitar">
+              <IconButton color="primary">
+                <BlockIcon />
               </IconButton>
             </Tooltip>
           </div>

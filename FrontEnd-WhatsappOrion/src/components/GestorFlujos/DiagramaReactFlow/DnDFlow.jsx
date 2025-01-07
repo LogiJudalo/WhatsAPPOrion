@@ -1,5 +1,5 @@
-import { useRef, useCallback, useEffect } from 'react';
-import Swal from 'sweetalert2'
+import { useRef, useCallback, useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import {
     ReactFlow,
     ReactFlowProvider,
@@ -10,26 +10,19 @@ import {
     useReactFlow,
     Background,
     reconnectEdge,
-} from '@xyflow/react';
+} from "@xyflow/react";
 
-import '@xyflow/react/dist/style.css';
+import "@xyflow/react/dist/style.css";
 
-import Sidebar from './Sidebar';
-import { DnDProvider, useDnD } from './DnDContext';
+import Sidebar from "./Sidebar";
+import { DnDProvider, useDnD } from "./DnDContext";
+import GestorFlujosServ from "../../../services/GestorFlujos/GestorFlujosServ";
 
-const initialNodes = [
-    {
-        id: '1',
-        type: 'input',
-        data: { label: 'Inicio' },
-        position: { x: 250, y: 5 },
-    },
-];
+const initialNodes = [];
 
 let id = 0;
-const getId = () => `dndnode_${id++}`;
+const getId = () => `${id++}`;
 
-// eslint-disable-next-line react-refresh/only-export-components
 const DnDFlow = () => {
     const reactFlowWrapper = useRef(null);
     const edgeReconnectSuccessful = useRef(true);
@@ -38,10 +31,12 @@ const DnDFlow = () => {
     const { screenToFlowPosition } = useReactFlow();
     const [type] = useDnD();
 
+    const [editingNode, setEditingNode] = useState(null); // Nodo en edición
+    const [newLabel, setNewLabel] = useState(""); // Nuevo texto para el nodo
+
     const onConnect = useCallback(
         (params) => setEdges((eds) => addEdge(params, eds)),
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [],
+        []
     );
 
     const onReconnectStart = useCallback(() => {
@@ -63,25 +58,31 @@ const DnDFlow = () => {
 
     const onDragOver = useCallback((event) => {
         event.preventDefault();
-        event.dataTransfer.dropEffect = 'move';
+        event.dataTransfer.dropEffect = "move";
     }, []);
+
+    const nodeTypeMapping = {
+        Inicio: "1",
+        En_curso: "2",
+        Finalizado: "3",
+        Recibido: "4",
+    };
 
     const onDrop = useCallback(
         (event) => {
             event.preventDefault();
 
-            // check if the dropped element is valid
-            if (!type) {
-                return;
-            }
+            if (!type) return;
 
             const position = screenToFlowPosition({
                 x: event.clientX,
                 y: event.clientY,
             });
 
+            const nodeId = nodeTypeMapping[type] || getId();
+
             const newNode = {
-                id: getId(),
+                id: nodeId,
                 type,
                 position,
                 data: { label: `${type}` },
@@ -89,49 +90,82 @@ const DnDFlow = () => {
 
             setNodes((nds) => nds.concat(newNode));
         },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [screenToFlowPosition, type],
+        [screenToFlowPosition, type]
     );
 
-    const saveFlow = useCallback(() => {
-        const flowData = {
-            nodes,
-            edges,
-        };
-        localStorage.setItem('reactflow-diagram', JSON.stringify(flowData));
-        Swal.fire({
-            title: '',
-            text: "Datos guardados con exito",
-            icon: 'success',
-            confirmButtonText: 'Aceptar',
-        })
+    const saveFlow = useCallback(async () => {
+        const flowData = { nodes, edges };
+
+        console.log("Estos son los datos que se van a enviar", flowData);
+        try {
+            const response = await GestorFlujosServ.saveDiagrama(flowData);
+            Swal.fire({
+                title: "",
+                text: "Datos guardados con éxito en el servidor",
+                icon: "success",
+                confirmButtonText: "Aceptar",
+            });
+            console.log("Respuesta del servidor:", response);
+        } catch (error) {
+            console.error("Error guardando los datos en el servidor:", error);
+            Swal.fire({
+                title: "Error",
+                text: "No se pudieron guardar los datos en el servidor. Inténtalo nuevamente.",
+                icon: "error",
+                confirmButtonText: "Aceptar",
+            });
+        }
+
+        localStorage.setItem("reactflow-diagram", JSON.stringify(flowData));
     }, [nodes, edges]);
 
     const loadFlow = useCallback(() => {
-        const savedFlow = localStorage.getItem('reactflow-diagram');
-        if (savedFlow) {
-            const { nodes: savedNodes, edges: savedEdges } = JSON.parse(savedFlow);
-            setNodes(savedNodes || []);
-            setEdges(savedEdges || []);
+        const data = {
+            nodes: [
+                { id: "1", data: { label: "Inicio" }, type: "Inicio", position: { x: 1575, y: -60 } },
+                { id: "4", data: { label: "Recibido" }, type: "Recibido", position: { x: 1575, y: 60 } },
+                { id: "0", data: { label: "Final" }, type: "Final", position: { x: 1575, y: 195 } },
+            ],
+            edges: [
+                { id: "xy-edge__1-4", source: "1", target: "4" },
+                { id: "xy-edge__4-0", source: "4", target: "0" },
+            ],
+        };
 
-            Swal.fire({
-                title: '',
-                text: "Datos cargados con exito",
-                icon: 'success',
-                confirmButtonText: 'Aceptar',
-            })
+        setNodes(data.nodes || []);
+        setEdges(data.edges || []);
 
-        } else {
-            alert('No hay ningún diagrama guardado.');
-        }
+        Swal.fire({
+            title: "",
+            text: "Datos cargados con éxito",
+            icon: "success",
+            confirmButtonText: "Aceptar",
+        });
     }, [setNodes, setEdges]);
 
     useEffect(() => {
         loadFlow();
     }, [loadFlow]);
 
+    const onNodeDoubleClick = useCallback((event, node) => {
+        setEditingNode(node.id);
+        setNewLabel(node.data.label);
+    }, []);
+
+    const handleLabelChange = (event) => {
+        setNewLabel(event.target.value);
+    };
+
+    const saveLabel = () => {
+        setNodes((nds) =>
+            nds.map((node) =>
+                node.id === editingNode ? { ...node, data: { ...node.data, label: newLabel } } : node
+            )
+        );
+        setEditingNode(null);
+    };
+
     return (
-        
         <div className="dndflow">
             <div className="save-load-buttons">
                 <button onClick={saveFlow}>Guardar</button>
@@ -147,26 +181,54 @@ const DnDFlow = () => {
                     onDrop={onDrop}
                     onDragOver={onDragOver}
                     snapToGrid
-                    onReconnect={onReconnect}
-                    onReconnectStart={onReconnectStart}
-                    onReconnectEnd={onReconnectEnd}
+                    onNodeDoubleClick={onNodeDoubleClick}
                     fitView
                     style={{ backgroundColor: "#F7F9FB" }}
                 >
                     <Controls />
                     <Background />
                 </ReactFlow>
+
+                {editingNode && (
+                <div 
+                    style={{ 
+                        position: "absolute", 
+                        top: 50, 
+                        right: 50, 
+                        zIndex: 1000,
+                        backgroundColor: "#072A47",
+                        padding: "15px",
+                        borderRadius: "10px",
+                        border: "2px solid white",
+                        boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                        color: "white", // Texto en blanco
+                        fontFamily: "Arial, sans-serif", 
+                    }}
+                >
+                    <input
+                        type="text"
+                        value={newLabel}
+                        onChange={handleLabelChange}
+                        placeholder="Nuevo texto"
+                        style={{ 
+                            marginRight: "10px", 
+                            width: "70%",
+                            borderRadius: "5px",
+                            border: "none"
+                        }}
+                    />
+                    <button onClick={saveLabel}>Guardar</button>
+                </div>
+            )}
             </div>
 
+    
 
             <Sidebar />
-
-
         </div>
     );
 };
 
-// eslint-disable-next-line react-refresh/only-export-components, react/display-name
 export default () => (
     <ReactFlowProvider>
         <DnDProvider>
